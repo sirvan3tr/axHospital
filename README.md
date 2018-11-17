@@ -15,5 +15,7 @@ virtualenv -p python3 venv
 
 export FLASK_APP=theapp.py
 
+export FLASK_DEBUG=1
+
 From repo but not local:
 git rm --cached *.pyc
