@@ -1,0 +1,17 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h3>{{ loginJSON.name }}</h3>
+<h2>Login</h2>
+
+{% if loginJSON.status == 0 %}
+<center id='loading'>Loading...</center>
+<center id='login-content' style="visibility: hidden;">
+	<canvas id="qr"></canvas>
+	<p>You can alternatively copy and paste this code to your omnee app.</p>
+	<div id="session-id"></div>
+</center>
+<script type="text/javascript" src="/static/js/qrious.min.js"></script>
+<script type="text/javascript" src="/static/js/login_socket.js"></script>
+{% endif %}
+{% endblock %}

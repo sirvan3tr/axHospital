@@ -1,0 +1,14 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h3>{{ loginJSON.name }}</h3>
+<h2>Welcome</h2>
+
+{% if loginJSON.status == 0 %}
+You need to log in
+{{tasks[1]}}
+{% else %}
+You're logged in.
+{{tasks[1].title}}
+{% endif %}
+{% endblock %}

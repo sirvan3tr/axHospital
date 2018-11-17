@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>{{ loginJSON.name }}</h3>
+{% if loginJSON.status == 0 %}
+    <p>It seems you're not logged in.</p>
+{% endif %}
+
+{% endblock %}
