@@ -1,61 +1,66 @@
 
 {% extends "base.html" %}
 {% block content %}
+<!--
 <h3>{{ loginJSON.name }}</h3>
 {% if loginJSON.status == 0 %}
     <p>It seems you're not logged in.</p>
 {% endif %}
+-->
+
+<div class="w3-content">
+ <img class="mySlides" src="https://www.stgeorges.nhs.uk/wp-content/uploads/2014/08/SGH-silho-banner-1024x325.gif" alt="custom_html_banner3" style="width:100%">
+</div>
+
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">WASSAUP Welcome to Warwicks Omnee Portal</h1>
-    <p class="lead">Quickly query students records and verify their credentials.</p>
+    <h1 class="display-4"> Sacred Heart Hospital</h1>
+    <!-- <p class="lead">???</p> -->
 </div>
+
 
 <div class="container">
       <div class="card-deck mb-3 text-center">
         <div class="card mb-4 box-shadow">
           <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Free</h4>
+            <h4 class="my-0 font-weight-normal">Patient Portal</h4>
           </div>
           <div class="card-body">
-            <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
             <ul class="list-unstyled mt-3 mb-4">
-              <li>10 users included</li>
-              <li>2 GB of storage</li>
-              <li>Email support</li>
-              <li>Help center access</li>
+              <li>Make an enquiry</li>
+              <li>Book an appointment</li>
+              <li>Access your records</li>
+              <li>Contact our staff</li>
             </ul>
-            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</button>
+            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Login</button>
           </div>
         </div>
         <div class="card mb-4 box-shadow">
           <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Pro</h4>
+            <h4 class="my-0 font-weight-normal">About Us</h4>
           </div>
           <div class="card-body">
-            <h1 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h1>
             <ul class="list-unstyled mt-3 mb-4">
-              <li>20 users included</li>
-              <li>10 GB of storage</li>
-              <li>Priority email support</li>
-              <li>Help center access</li>
+              <li>We provide a range of acute and</li>
+              <li>specialist services at our hospital</li>
+              <li>including inpatient and outpatient</li>
+              <li>care and services.</li>
             </ul>
-            <button type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
+            <button type="button" class="btn btn-lg btn-block btn-primary">Find out more</button>
           </div>
         </div>
         <div class="card mb-4 box-shadow">
           <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Enterprise</h4>
+            <h4 class="my-0 font-weight-normal">Careers</h4>
           </div>
           <div class="card-body">
-            <h1 class="card-title pricing-card-title">$29 <small class="text-muted">/ mo</small></h1>
             <ul class="list-unstyled mt-3 mb-4">
-              <li>30 users included</li>
-              <li>15 GB of storage</li>
-              <li>Phone and email support</li>
-              <li>Help center access</li>
+              <li>All our staff are an integral part</li>
+              <li>of our team. Our specialists and</li>
+              <li>staff are dedicated professionals</li>
+              <li>from diverse backgrounds.</li>
             </ul>
-            <button type="button" class="btn btn-lg btn-block btn-primary">Contact us</button>
+            <button onclick="window.location.href='/register'" type="button" class="btn btn-lg btn-block btn-primary">Join us</button>
           </div>
         </div>
       </div>

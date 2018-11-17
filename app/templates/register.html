@@ -6,13 +6,17 @@
 <hr />
 <div class="row">
     <div class="col-sm">
-        <h4>Option 1: Scan QR</h4>
+      <center>
+        <h4>Scan QR Code</h4>
+      </center>
         <center>
-            Scan the QR code using your Omnee app!
+            Scan the QR code using Axolotl!
             <br />
             <canvas id="qr"></canvas>
         </center>
     </div>
+
+    <!--
     <div class="col-sm">
         <h4>Option 2: Manually enter your details</h4>
         <form style="width: 300px">
@@ -24,7 +28,7 @@
                 <label for="dob">Date of Birth</label>
                 <input type="text" class="form-control" id="dob" value="26/10/1992">
             </div>
-                    
+
             <div class="form-group">
                 <label for="email">Email address</label>
                 <input type="email" class="form-control" id="email" aria-describedby="emailHelp" value="Sirvan3tr@gmail.com">
@@ -41,6 +45,7 @@
             <button type="button" onclick="submitFunction()" class="btn btn-primary">Submit</button>
         </form>
     </div>
+    -->
   </div>
 
 
@@ -175,7 +180,7 @@ ws.onopen = function() {
                 }
             }
             y = modulo(y.toString(),n);
-            console.log('y: ' + y)            
+            console.log('y: ' + y)
             var yJSON = JSON.stringify({'type' : 'almasFFS', 'round' : 'rnds', 'step' : 3, 'data' : y});
             ws.send(yJSON);
         // Step 4: Server Verify
@@ -184,7 +189,7 @@ ws.onopen = function() {
             console.log('Result: ' + dataJSON['data']);
             // Begin again
             if (rndStatus['round'] < rnds) {
-                var innit = JSON.stringify({'type' : 'almasFFS', 
+                var innit = JSON.stringify({'type' : 'almasFFS',
                     'round' : rndStatus['round']+1, 'step' : 0, 'data' : ''});
                 ws.send(innit);
                 rndStatus['round'] +=1;
