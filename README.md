@@ -31,3 +31,5 @@ git rm --cached *.pyc
 
 Dump current packages into a requirements file:
 pip freeze > requirements.txt
+
+export FLASK_DEBUG=1
