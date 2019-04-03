@@ -18,23 +18,26 @@ var ws = new WebSocket("ws://127.0.0.1:5678/"),
 ws.onopen = function() {
     console.log('Opened websocket');
 };
-n = 0;
+
 sessionInfo = {'uID' : '', 'signature': ''};
+var msg = 0;
+
 ws.onmessage = function (event) {
     var content = document.createTextNode(event.data),
         dataJSON = JSON.parse(event.data);
 
-    if (dataJSON['type'] == "uID" && n == 0) {
+    if (dataJSON['type'] == "uID" && msg == 0) {
         console.log('We have uID');
+        
         console.log(dataJSON['uID']);
         sessionInfo['uID'] = dataJSON['uID'];
         document.getElementById('session-id').innerHTML = dataJSON['uID'];
         var qr = new QRious({
           element: document.getElementById('qr'),
           size: 200,
-          value: dataJSON['uID']
+          value: JSON.stringify({'type': 'loginSig', 'url': 'http://3a1d02c1.ngrok.io', 'uID': dataJSON['uID']})
         });
-        n += 1;
+        msg += 1;
     } else if(dataJSON['type'] == 'signature') {
         console.log('We have signature');
         console.log(dataJSON['signature']);
