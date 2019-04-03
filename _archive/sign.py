@@ -6,11 +6,11 @@ import json, binascii, websockets, asyncio
 
 omneeID = '0xa78e5bb6ff6a849e120985d32532e5067f262e19'
 # Acting like the mobile phone
-host = 'p494f66NhkA5'
+host = '6fSOx0hpRu7t'
 
 # Add timestamp and other measures to
 # counter replay and other attacks
-msg = 'p494f66NhkA5' + omneeID
+msg = '6fSOx0hpRu7t' + omneeID
 
 # This private keys public key equivalent is registered with data source
 pk = '0xb50c18d670e82f3f559142d63773b5f60882d337f7d40e78f87973484740ab0d'
