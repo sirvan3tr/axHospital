@@ -309,11 +309,11 @@ def register():
 @app.route('/login/confirm/<msg>/<sig>', methods=['GET'])
 def loginConfirm(msg, sig):
     msgHash = defunct_hash_message(text=msg)
-    omneeID = w3.eth.account.recoverHash(msgHash, signature=sig)
+    deeID = w3.eth.account.recoverHash(msgHash, signature=sig)
 
     student = [student for student in students if student['omneeID'] == omneeID]
     if len(student) == 0:
-        return omneeID
+        return deeID
     #return jsonify({'student': student[0]})
     session['omneeID'] = omneeID
     htmlTxt = '<a href="/">Home</a>'
@@ -352,7 +352,6 @@ def verify():
     verPubKey = w3.eth.account.recoverHash(msgHash, signature=req_data['sig'])
     #verPubKey = "0x627306090abab3a6e1400e9345bc60c78a8bef57"
 
-    
 
     # set pre-funded account as sender
     w3.eth.defaultAccount = w3.eth.accounts[1]
@@ -375,7 +374,51 @@ def verify():
         if str(key[1])==str(verPubKey):
             return "SUCCESS"
     return "FAIL"
-        
+
+## Function to check the blockchain for a public key
+## Ensure a blockchain is running is defined inside the function
+
+## deeIDAddress: Contract address of the user that we wish to verify
+## pubKey: The public key we wish to check if exists inside deeID Contract
+def verify(deeIDAddress, pubKey):
+    # address of the identity holder
+    #address = Web3.toChecksumAddress("0xf2beae25b23f0ccdd234410354cb42d08ed54981")
+    #address = Web3.toChecksumAddress(req_data['recDID'])
+
+    # web3.py instance
+    w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:9545"))
+
+    # the public key we wish to verify
+    # WE NEED msg AND sig
+    # NOT SECURE, IN THE FUTURE RUN PROPER MSG PROCESSING
+    #msgHash = defunct_hash_message(text=req_data['msg'])
+    #verPubKey = w3.eth.account.recoverHash(msgHash, signature=req_data['sig'])
+    #verPubKey = "0x627306090abab3a6e1400e9345bc60c78a8bef57"
+
+
+    # set pre-funded account as sender
+    w3.eth.defaultAccount = w3.eth.accounts[1]
+    print(Web3.toChecksumAddress(w3.eth.defaultAccount))
+
+    # get the DID contract
+    DIDContract = w3.eth.contract(
+        address=deeIDAddress,
+        abi=abi,
+    )
+
+    # search through the keys
+    # get the number of keys stored on the identity contract
+    lenK = DIDContract.functions.lenKeys().call()
+
+    keyFound = False
+    for i in range(0, lenK):
+        key = DIDContract.functions.getKey(i).call()
+        print(key[1])
+        if str(key[1])==str(pubKey):
+            return True
+    return False
+
+
 @app.route('/admin/viewdata', methods=['GET'])
 def viewdata():
     data = 'hello'
@@ -386,3 +429,10 @@ def viewdata():
       columns=columns,
       loginJSON = loginJSON,
       title='[ADMIN PAGE] Fetching the Data')
+
+
+## View all of the deeID contracts on the blockchain
+@app.route('/deeIDs', methods=['GET'])
+def viewIds():
+    # set pre-funded account as sender
+    w3.eth.defaultAccount = w3.eth.accounts[1]

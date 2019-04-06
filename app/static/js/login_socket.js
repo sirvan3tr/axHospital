@@ -35,7 +35,13 @@ ws.onmessage = function (event) {
         var qr = new QRious({
           element: document.getElementById('qr'),
           size: 200,
-          value: JSON.stringify({'type': 'loginSig', 'url': 'http://3a1d02c1.ngrok.io', 'uID': dataJSON['uID']})
+          value: JSON.stringify({
+                'type': 'loginSig',
+                'wsURL': 'https://inicio.serveo.net',
+                'uID': dataJSON['uID'],
+                'data' : 'a pubKey of somesort',
+                'expirytime' : '',
+            })
         });
         msg += 1;
     } else if(dataJSON['type'] == 'signature') {

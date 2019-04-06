@@ -121,8 +121,13 @@ ws.onmessage = function(event) {
         console.log(dataJSON);
         var qr = new QRious({
             element: document.getElementById('qr'),
-            size: 200,
-            value: JSON.stringify({'url': 'https://0e8c97f1.ngrok.io/', 'id': dataJSON['uID']})
+            size: 300,
+            value: JSON.stringify({
+                'type': 'almasFFSRegister',
+                'wsURL': 'https://794ca610.ngrok.io',
+                'uID': dataJSON['uID'],
+                'expirytime' : '',
+            })
             //value: dataJSON['uID'].toString()
         });
     }
