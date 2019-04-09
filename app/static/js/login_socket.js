@@ -25,6 +25,8 @@ var msg = 0;
 ws.onmessage = function (event) {
     var content = document.createTextNode(event.data),
         dataJSON = JSON.parse(event.data);
+    
+    console.log(dataJSON);
 
     if (dataJSON['type'] == "uID" && msg == 0) {
         console.log('We have uID');
@@ -37,17 +39,17 @@ ws.onmessage = function (event) {
           size: 200,
           value: JSON.stringify({
                 'type': 'loginSig',
-                'wsURL': 'https://inicio.serveo.net',
+                'wsURL': 'https://infligo.serveo.net',
                 'uID': dataJSON['uID'],
                 'data' : 'a pubKey of somesort',
                 'expirytime' : '',
             })
         });
         msg += 1;
-    } else if(dataJSON['type'] == 'signature') {
+    } else if(dataJSON['type'] == 'loginSigSigned') {
         console.log('We have signature');
-        console.log(dataJSON['signature']);
-        sessionInfo['signature'] = dataJSON['signature'];
+        console.log(dataJSON['loginSigSigned']);
+        sessionInfo['signature'] = dataJSON['loginSigSigned'];
         console.log(sessionInfo);
     }
 
