@@ -93,7 +93,7 @@ function genX(n, rnd=1) {
         rs = r.toString(),
         r2 = mult(rs,rs),
         x = modulo(r2.toString(), n),
-        xJSON = JSON.stringify({'type' : 'almasFFS', 'round' : rnd, 'step' : 1, 'data' : x });
+        xJSON = JSON.stringify({'type' : 'almasFFS','round' : rnd, 'step' : 1, 'data' : x });
     return [r, x, xJSON];
 }
 
@@ -124,7 +124,7 @@ ws.onmessage = function(event) {
             size: 300,
             value: JSON.stringify({
                 'type': 'almasFFSRegister',
-                'wsURL': 'https://794ca610.ngrok.io',
+                'wsURL': 'https://timeo.serveo.net',
                 'uID': dataJSON['uID'],
                 'expirytime' : '',
             })

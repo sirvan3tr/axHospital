@@ -39,7 +39,7 @@ ws.onmessage = function (event) {
           size: 200,
           value: JSON.stringify({
                 'type': 'loginSig',
-                'wsURL': 'https://infligo.serveo.net',
+                'wsURL': 'https://timeo.serveo.net',
                 'uID': dataJSON['uID'],
                 'data' : 'a pubKey of somesort',
                 'expirytime' : '',

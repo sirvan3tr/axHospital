@@ -13,6 +13,13 @@ with open('../build/contracts/deeID.json') as json_file:
     deeIDabi= deeID['abi']
 
 
+address = Web3.toChecksumAddress(req_data['recDID'])
+
+# get the deeID contract
+deeIDContract = w3.eth.contract(
+    address=address,
+    abi=abi,
+)
 
 # address of the identity holder
 #address = Web3.toChecksumAddress("0xf2beae25b23f0ccdd234410354cb42d08ed54981")
