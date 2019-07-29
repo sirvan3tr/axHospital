@@ -55,6 +55,45 @@
 
 <script type="text/javascript" src="/static/js/qrious.min.js"></script>
 <script>
+/*
+    Initilisation
+*/
+var ws = new WebSocket("ws://127.0.0.1:5678/");
+
+// Count the number of messages received from websocket server
+msg = 0
+ws.onmessage = function(event) {
+    msg +=1;
+    
+    let dataJSON = JSON.parse(event.data);
+    console.log(dataJSON);
+
+    if(dataJSON['data']=='Pass') {
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('qr').style.display = 'none';
+        document.getElementById('message').innerHTML = 'Congratulations, your identity has been verified';
+    }
+
+    // Create the QR Code on screen
+    if (dataJSON['type'] == "uID") {
+        document.getElementById('qr').innerHTML = '';
+        console.log(dataJSON);
+        var qr = new QRious({
+            element: document.getElementById('qr'),
+            size: 300,
+            value: JSON.stringify({
+                'type': 'almasFFSRegister',
+                'wsURL': 'https://lucror.serveo.net/',
+                'uID': dataJSON['uID'],
+                'expirytime' : '',
+            })
+        });
+    }
+}
+
+/*
+
+
 document.getElementById('loader').style.display = 'none';
 function mult(strNum1,strNum2){
     var a1 = strNum1.split("").reverse();
@@ -97,41 +136,6 @@ function genX(n, rnd=1) {
     return [r, x, xJSON];
 }
 
-/*
-Initilisation
-
-*/
-var ws = new WebSocket("ws://127.0.0.1:5678/");
-msg = 0
-ws.onmessage = function(event) {
-    msg +=1;
-    document.getElementById('qr').innerHTML = '';
-    var dataJSON = JSON.parse(event.data);
-    console.log(dataJSON);
-
-    if(dataJSON['data']=='Pass') {
-        document.getElementById('loader').style.display = 'block';
-        document.getElementById('qr').style.display = 'none';
-        document.getElementById('message').innerHTML = 'Congratulations, your identity has been verified';
-    } else {
-        console.log("didnt change");
-    }
-
-    if (dataJSON['type'] == "uID" && msg == 2) {
-        console.log(dataJSON);
-        var qr = new QRious({
-            element: document.getElementById('qr'),
-            size: 300,
-            value: JSON.stringify({
-                'type': 'almasFFSRegister',
-                'wsURL': 'https://timeo.serveo.net',
-                'uID': dataJSON['uID'],
-                'expirytime' : '',
-            })
-            //value: dataJSON['uID'].toString()
-        });
-    }
-}
 
 function submitFunction() {
     //e.preventDefault();
@@ -229,6 +233,8 @@ ws.onopen = function() {
 }; // on open
 return false;
 }// submitFunction
+
+*/
 </script>
 
 {% endif %}

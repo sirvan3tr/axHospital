@@ -1,6 +1,7 @@
 // Generate a random string, that will act as a unique ID for our URL
 // currently not used -- maybe as a method to stop replay attack later
 
+var ws_url = 'https://lucror.serveo.net/'
 
 function createID() {
     var text = "",
@@ -11,7 +12,7 @@ function createID() {
     return text;
 }
 
-var ws = new WebSocket("ws://127.0.0.1:5678/"),
+var ws = new WebSocket("ws://lucror.serveo.net/"),
     messages = document.createElement('ul'),
     submit = document.getElementById('mysubmit');
 
@@ -39,7 +40,7 @@ ws.onmessage = function (event) {
           size: 200,
           value: JSON.stringify({
                 'type': 'loginSig',
-                'wsURL': 'https://timeo.serveo.net',
+                'wsURL': ws_url,
                 'uID': dataJSON['uID'],
                 'data' : 'a pubKey of somesort',
                 'expirytime' : '',
