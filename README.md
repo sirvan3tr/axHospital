@@ -23,12 +23,14 @@ go to the websockets and run python3 setup.py install (there is a problem with p
 
 You need Python 3.7 and pip installed.
 
-pip install virtualenv
+'pip install virtualenv'
 
 To create venv in py3:
-virtualenv -p python3 venv or just virtualenv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt
+'virtualenv -p python3 venv'
+or 'just virtualenv venv'
+'.\venv\Scripts\activate' (Windows)
+'source venv\bin\activate' (Linux/OSX)
+'pip install -r requirements.txt'
 
 
 export FLASK_APP=theapp.py
