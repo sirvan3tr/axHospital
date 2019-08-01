@@ -11,7 +11,7 @@
       </center>
         <center>
             
-            <div id="message">Scan the QR code using Axolotl!</div>
+            <div id="message">Scan the QR code using your deeID Mobile Phone</div>
             <br />
             <canvas id="qr"></canvas>
             <div id="loader"></div>
@@ -58,7 +58,7 @@
 /*
     Initilisation
 */
-var ws = new WebSocket("ws://127.0.0.1:5678/");
+var ws = new WebSocket("ws://35.246.61.212/");
 
 // Count the number of messages received from websocket server
 msg = 0
@@ -83,9 +83,11 @@ ws.onmessage = function(event) {
             size: 300,
             value: JSON.stringify({
                 'type': 'almasFFSRegister',
-                'wsURL': 'https://lucror.serveo.net/',
+                'wsURL': 'http://35.246.61.212',
                 'uID': dataJSON['uID'],
                 'expirytime' : '',
+                'webdeeID': '', // deeID of the organisation
+                'sig': '', // signature of the org to ensure integirty of QR code
             })
         });
     }

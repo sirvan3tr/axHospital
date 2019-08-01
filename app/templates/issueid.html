@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>{{ loginJSON.name }}</h3>
+{% if loginJSON.status == 0 %}
+<h1>Let's create a new Identity</h1>
+Sacred Hospital will issue you a new idenityt, we assume you have undergone the necessary steps (such as a face to face meeting) for us to validate your identity and therefore vouch for you on the deeID network.
+<hr />
+<form method="post" action="/issuedid">
+    <div class="form-group ">
+     <label class="control-label requiredField" for="name">
+      First name
+      <span class="asteriskField">
+       *
+      </span>
+     </label>
+     <input class="form-control" id="name" name="name" type="text"/>
+    </div>
+    <div class="form-group ">
+     <label class="control-label requiredField" for="surname">
+      Surname
+      <span class="asteriskField">
+       *
+      </span>
+     </label>
+     <input class="form-control" id="surname" name="surname" type="text"/>
+    </div>
+    <div class="form-group ">
+     <label class="control-label requiredField" for="dateofbirth">
+      Date of birth
+      <span class="asteriskField">
+       *
+      </span>
+     </label>
+     <input class="form-control" id="dateofbirth" name="dateofbirth" type="text"/>
+     <span class="help-block" id="hint_dateofbirth">
+      Format: DD/MM/YYY
+     </span>
+    </div>
+    <div class="form-group ">
+     <label class="control-label requiredField" for="deeidcontractaddress">
+      deeID
+      <span class="asteriskField">
+       *
+      </span>
+     </label>
+     <input class="form-control" id="deeidcontractaddress" name="deeidcontractaddress" type="text"/>
+     <span class="help-block" id="hint_deeidcontractaddress">
+      Your deeID contract address
+     </span>
+    </div>
+    <div class="form-group">
+     <div>
+      <button class="btn btn-primary " name="submit" type="submit">
+       Submit
+      </button>
+     </div>
+    </div>
+   </form>
+{% endif %}
+{% endblock %}

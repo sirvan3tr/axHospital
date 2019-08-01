@@ -4,6 +4,7 @@ import web3, json
 
 from web3 import Web3
 from eth_account.messages import defunct_hash_message
+from hub2 import TrustedHub
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
@@ -234,8 +235,8 @@ tasks = [
 students = [
     {   # Record for Sirvan Almasi
         'id': '1', # portal ID
-        #'omneeID' : '0xa78e5bb6ff6a849e120985d32532e5067f262e19',
-        'omneeID' : '0x6751c5563A62675Ffba7D3220f883c719b7B9F49', # users omnee ID
+        #'deeID' : '0xa78e5bb6ff6a849e120985d32532e5067f262e19',
+        'deeID' : '0x6751c5563A62675Ffba7D3220f883c719b7B9F49', # users omnee ID
 #0xb50c18d670e82f3f559142d63773b5f60882d337f7d40e78f87973484740ab0d
         'price' : '10', # 10 GBP
         'user' : {
@@ -255,7 +256,7 @@ students = [
         'permission' : {
             'start_date' : '16/07/2018',
             'end_date' : '30/08/2018',
-            'omneeID' : '0x3d63574ba709e1a77f41bffdfa35d81bec767e82',
+            'deeID' : '0x3d63574ba709e1a77f41bffdfa35d81bec767e82',
 #0x7370a704d23904025085daa6299071fa679a69d57c6e22445c3e8cd2b193d853
             'status' : 'active',
             'fee' : 'free' # free, thus no need to pay
@@ -263,9 +264,11 @@ students = [
     }
 ]
 
+
+
 # handle the login sessions
 def loginSession():
-    if 'omneeID' in session:
+    if 'deeID' in session:
         # for testing we only have 1 user thus just return that
         loginJSON = {
                 'status' : 1,
@@ -282,9 +285,11 @@ def loginSession():
     return loginJSON
 
 
+
 @app.route('/todo/api/v1.0/tasks', methods=['GET'])
 def get_tasks():
     return jsonify({'tasks': tasks})
+
 
 
 @app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['GET'])
@@ -295,15 +300,51 @@ def get_task(task_id):
     return jsonify({'task': task[0]})
 
 
+
 @app.route('/', methods=['GET'])
 def index():
     loginJSON = loginSession()
     return render_template('index.html', loginJSON = loginJSON)
 
+
+
+## Feige-Fiat-Shamir Crypto Identification
+## The user will attempt to prove ID
+## We need to approve whether we trust the ID issuer
 @app.route('/register', methods=['GET'])
 def register():
     loginJSON = loginSession()
+    # register.html will have the relevant JS code to contact
+    # the websocket and handle the interaction
     return render_template('register.html', loginJSON = loginJSON)
+
+
+
+@app.route('/issueid', methods=['GET'])
+def issueid():
+    loginJSON = loginSession()
+    return render_template('issueid.html', loginJSON = loginJSON)
+
+
+
+## Create the ID here and return the values to the user
+## Using the fiat-shamir crypto - create the secret keys
+@app.route('/issuedid', methods=['POST'])
+def issuedid():
+
+    # These secrets should not be here
+    # You should decide where you want to store them yourself in your app
+    p = 56999 # Secret
+    q = 58403 # Secret
+    k = 10 # number of keys
+
+    req_data = request.form
+
+    th = TrustedHub(req_data, p, q, k)
+    v, s, j, n, i = th.createID()
+    #return json.dumps(req_data)
+    return json.dumps({'v': v, 's': s, 'j': j, 'n': n, 'i': i})
+
 
 
 @app.route('/login/confirm/<msg>/<sig>', methods=['GET'])
@@ -311,28 +352,36 @@ def loginConfirm(msg, sig):
     msgHash = defunct_hash_message(text=msg)
     deeID = w3.eth.account.recoverHash(msgHash, signature=sig)
 
-    student = [student for student in students if student['omneeID'] == omneeID]
+    student = [student for student in students if student['deeID'] == deeID]
     if len(student) == 0:
         return deeID
     #return jsonify({'student': student[0]})
-    session['omneeID'] = omneeID
+    session['deeID'] = deeID
     htmlTxt = '<a href="/">Home</a>'
-    return 'You are now logged in: ' + omneeID + '<br />' + htmlTxt
+    return 'You are now logged in: ' + deeID + '<br />' + htmlTxt
+
+
 
 @app.route('/login', methods=['Get'])
 def login():
     loginJSON = loginSession()
     return render_template('login.html', loginJSON = loginJSON)
 
+
+
 @app.route('/logout', methods=['Get'])
 def logout():
-    session.pop('omneeID', None)
+    session.pop('deeID', None)
     return redirect(url_for('index'))
+
+
 
 @app.route('/profile', methods=['Get'])
 def myprofile():
     loginJSON = loginSession()
     return render_template('myprofile.html', loginJSON = loginJSON, tasks = tasks)
+
+
 
 @app.route('/verify', methods=['Post'])
 def verify():
@@ -375,9 +424,10 @@ def verify():
             return "SUCCESS"
     return "FAIL"
 
-## Function to check the blockchain for a public key
-## Ensure a blockchain is running is defined inside the function
 
+
+## >> Check deeID contract for a given public key
+## Ensure a blockchain is running is defined inside the function
 ## deeIDAddress: Contract address of the user that we wish to verify
 ## pubKey: The public key we wish to check if exists inside deeID Contract
 def verify(deeIDAddress, pubKey):

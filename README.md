@@ -37,7 +37,7 @@ export FLASK_APP=theapp.py
 
 export FLASK_DEBUG=1
 
-
+python -m flask run
 # Misc:
 Remove from repo but not local:
 git rm --cached *.pyc
