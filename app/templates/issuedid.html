@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>{{ loginJSON.name }}</h3>
+{% if loginJSON.status == 0 %}
+{% endif %}
+
+<h1>Your identity</h1>
+You're almost there, enter your private key (a private key connected to your deeID) and your email address - then you can import your ID to your phone.
+<hr />
+<canvas id="qr"></canvas>
+<script type="text/javascript" src="/static/js/qrious.min.js"></script>
+<div>
+Private key: <input type="text" name="pk" id="pk" /><br />
+Email add: <input type="text" name="email" id="email" /><br />
+your raw id: <div id="rawid" style="display:none">{{ idJSON }}</div><br />
+</div>
+<button id="createQRCode">Create QR Code</button>
+<script type="text/javascript">
+document.getElementById("createQRCode").addEventListener("click", createQRCode, false);
+function createQRCode() {
+  let data = document.getElementById('rawid').innerText;
+  let pk = document.getElementById('pk').value;
+  let emailadd = document.getElementById('email').value;
+
+  data = JSON.parse(data);
+
+  var qr = new QRious({
+    element: document.getElementById('qr'),
+    size: 300,
+    value: JSON.stringify({
+      'type': 'deeIDProfile',
+      'ver': '0.1',
+      'pk': pk,
+      'S': data.S,
+      'I': data.I,
+      'J': data.J,
+      'n': data.n,
+      'deeID': data.Iraw.deeidcontractaddress,
+      'userInfo': {
+        'firstname': data.Iraw.name,
+        'surname': data.Iraw.surname,
+        'dob': data.Iraw.dataofbirth,
+        'placeOfBirth': '',
+        'email': [{
+          'title': 'Untitled',
+          'email': emailadd,
+        }],
+        'tel': [{
+          'title': '',
+          'tel': '',
+        }]
+      }
+    })
+  }); // qr code func
+}
+</script>
+{% endblock %}

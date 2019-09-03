@@ -1,6 +1,6 @@
 from flask import render_template, session, redirect, url_for, escape, request
 from app import app
-import web3, json
+import web3, json, uuid
 
 from web3 import Web3
 from eth_account.messages import defunct_hash_message
@@ -331,6 +331,7 @@ def issueid():
 ## Using the fiat-shamir crypto - create the secret keys
 @app.route('/issuedid', methods=['POST'])
 def issuedid():
+    loginJSON = loginSession()
 
     # These secrets should not be here
     # You should decide where you want to store them yourself in your app
@@ -338,12 +339,16 @@ def issuedid():
     q = 58403 # Secret
     k = 10 # number of keys
 
+    uniqueRand = uuid.uuid4()
     req_data = request.form
+    I = [req_data['name'], req_data['surname'],
+        req_data['dateofbirth'], req_data['deeidcontractaddress'], str(uniqueRand)]
+    trustedHub = TrustedHub(str(I), p, q, k)
+    v, s, j, n, I = trustedHub.createID()
 
-    th = TrustedHub(req_data, p, q, k)
-    v, s, j, n, i = th.createID()
-    #return json.dumps(req_data)
-    return json.dumps({'v': v, 's': s, 'j': j, 'n': n, 'i': i})
+    idJSON = json.dumps({'V': v, 'S': s, 'J': j, 'n': n, 'Iraw': req_data, 'I': I})
+    return render_template('issuedid.html', loginJSON = loginJSON, idJSON = idJSON)
+
 
 
 
