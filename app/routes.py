@@ -335,6 +335,11 @@ def issuedid():
 
     # These secrets should not be here
     # You should decide where you want to store them yourself in your app
+
+    # 256bit prime generated with openssl prime -generate -bits 256
+    p = 108737391008438014623164217168477277531061621767300619083219446155602618695149
+    q = 104733366844338231505936350942338934720369370196777483091058558077190366687397
+
     p = 56999 # Secret
     q = 58403 # Secret
     k = 10 # number of keys
