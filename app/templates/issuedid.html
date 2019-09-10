@@ -12,7 +12,7 @@ You're almost there, enter your private key (a private key connected to your dee
 <div>
 Private key: <input type="text" name="pk" id="pk" /><br />
 Email add: <input type="text" name="email" id="email" /><br />
-your raw id: <div id="rawid" style="display:none">{{ idJSON }}</div><br />
+your raw id: <div id="rawid" >{{ idJSON }}</div><br />
 </div>
 <button id="createQRCode">Create QR Code</button>
 <script type="text/javascript">
@@ -23,11 +23,7 @@ function createQRCode() {
   let emailadd = document.getElementById('email').value;
 
   data = JSON.parse(data);
-
-  var qr = new QRious({
-    element: document.getElementById('qr'),
-    size: 300,
-    value: JSON.stringify({
+  thej = JSON.stringify({
       'type': 'deeIDProfile',
       'ver': '0.1',
       'pk': pk,
@@ -50,7 +46,14 @@ function createQRCode() {
           'tel': '',
         }]
       }
-    })
+    });
+
+  console.log(thej);
+  
+  var qr = new QRious({
+    element: document.getElementById('qr'),
+    size: 600,
+    value: thej
   }); // qr code func
 }
 </script>

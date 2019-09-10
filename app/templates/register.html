@@ -11,45 +11,12 @@
         This is an example of the Fiat-Shamir identification (an interactive zero-knowledge) protocol.
       </center>
         <center>
-            
             <div id="message">Scan the QR code using your deeID Mobile App</div>
             <br />
             <canvas id="qr"></canvas>
             <div id="loader"></div>
-            
         </center>
     </div>
-
-    <!--
-    <div class="col-sm">
-        <h4>Option 2: Manually enter your details</h4>
-        <form style="width: 300px">
-            <div class="form-group">
-                <label for="fullname">Fullname</label>
-                <input type="text" class="form-control" id="fullname" value="Sirvan Almasi">
-            </div>
-            <div class="form-group">
-                <label for="dob">Date of Birth</label>
-                <input type="text" class="form-control" id="dob" value="26/10/1992">
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" value="Sirvan3tr@gmail.com">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-                <label for="birthcity">City of Birth</label>
-                <input type="text" class="form-control" id="birthcity" value="Saqqez">
-            </div>
-            <div class="form-group">
-                <label for="jvalues">J Values</label>
-                <input type="text" class="form-control" id="jvalues" value="[879526612, 1864187998, 3119683462, 785478098, 1061096975, 2814024602, 972289411, 2683930126, 1899345369, 666184941]">
-            </div>
-            <button type="button" onclick="submitFunction()" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
-    -->
   </div>
 
 
@@ -59,7 +26,8 @@
 /*
     Initilisation
 */
-var ws = new WebSocket("ws://35.246.61.212/");
+//var ws = new WebSocket("ws://35.246.61.212/");
+var ws = new WebSocket('ws://voco.serveo.net/')
 
 // Count the number of messages received from websocket server
 msg = 0
@@ -84,7 +52,8 @@ ws.onmessage = function(event) {
             size: 300,
             value: JSON.stringify({
                 'type': 'almasFFSRegister',
-                'wsURL': 'http://35.246.61.212',
+                //'wsURL': 'http://35.246.61.212',
+                'wsURL': 'https://voco.serveo.net/',
                 'uID': dataJSON['uID'],
                 'expirytime' : '',
                 'webdeeID': '', // deeID of the organisation

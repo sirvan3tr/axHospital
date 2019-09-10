@@ -336,13 +336,23 @@ def issuedid():
     # These secrets should not be here
     # You should decide where you want to store them yourself in your app
 
+    '''
+    ## GENERATING P AND Q TO GET N
+    To generate the primes p and q, generate a random number of bit length k/2 where k is the required bit length of the modulus n; set the low bit (this ensures the number is odd) and set the two highest bits (this ensures that the high bit of n is also set); check if prime (use the Rabin-Miller test); if not, increment the number by two and check again until you find a prime. This is p. Repeat for q starting with a random integer of length k−k/2. If p<q, swop p and q (this only matters if you intend using the CRT form of the private key). In the extremely unlikely event that p=q, check your random number generator! Alternatively, instead of incrementing by 2, just generate another random number each time.
+
+    There are stricter rules in ANSI X9.31 to produce strong primes and other restrictions on p and q to minimise the possibility of certain techniques being used against the algorithm. There is much argument about this topic. It is probably better just to use a longer key length.
+
+    '''
     # 256bit prime generated with openssl prime -generate -bits 256
     p = 108737391008438014623164217168477277531061621767300619083219446155602618695149
     q = 104733366844338231505936350942338934720369370196777483091058558077190366687397
+    # n is therefore 512 bits
+    # Verify in JavaScript quickly: BigInt(p).toString(2).length 
 
-    p = 56999 # Secret
-    q = 58403 # Secret
-    k = 10 # number of keys
+    #p = 56999 # Secret
+    #q = 58403 # Secret
+
+    k = 5 # number of keys
 
     uniqueRand = uuid.uuid4()
     req_data = request.form
@@ -350,6 +360,11 @@ def issuedid():
         req_data['dateofbirth'], req_data['deeidcontractaddress'], str(uniqueRand)]
     trustedHub = TrustedHub(str(I), p, q, k)
     v, s, j, n, I = trustedHub.createID()
+
+    v = list(map(str, v))
+    s = list(map(str, s))
+    j = list(map(str, j))
+    n = str(n)
 
     idJSON = json.dumps({'V': v, 'S': s, 'J': j, 'n': n, 'Iraw': req_data, 'I': I})
     return render_template('issuedid.html', loginJSON = loginJSON, idJSON = idJSON)
