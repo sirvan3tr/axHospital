@@ -1,9 +1,11 @@
 from flask import render_template, session, redirect, url_for, escape, request
 from app import app
-import web3, json, uuid
+import web3, json, uuid, binascii
 
 from web3 import Web3
+from web3.auto import w3
 from eth_account.messages import defunct_hash_message
+from hexbytes import HexBytes
 from hub2 import TrustedHub
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -511,3 +513,36 @@ def viewdata():
 def viewIds():
     # set pre-funded account as sender
     w3.eth.defaultAccount = w3.eth.accounts[1]
+
+
+@app.route('/form', methods=['GET'])
+def secureForm():
+    loginJSON = loginSession()
+
+    # The website's deeID address
+    deeID = '0xa78e5bb6ff6a849e120985d32532e5067f262e19'
+
+    # Unique number to know which user the server is communicating with
+    y = 'dt18LneS1VWq'
+
+    # Add timestamp and other measures to
+    # counter replay and other attacks
+    msg = deeID
+    # The website's private key, the public key must in the deeID contract
+    pk = '0xb50c18d670e82f3f559142d63773b5f60882d337f7d40e78f87973484740ab0d'
+    msgHash = defunct_hash_message(text=msg)
+
+    signedMsg = w3.eth.account.signHash(msgHash, private_key=pk)
+    hexSig = binascii.hexlify(signedMsg.signature)
+    sig = str(hexSig).split("'")[1]
+
+    outMsg = json.dumps({
+            'type': 'deeIDForm',
+            'form_type': 'card_details',
+            'y': y,
+            'deeID': deeID,
+            'msg': msg,
+            'signature' : str(sig)
+        })
+    
+    return render_template('form.html', loginJSON = loginJSON, outMsg = outMsg)

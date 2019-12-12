@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>{{ loginJSON.name }}</h3>
+{% if loginJSON.status == 0 %}
+<h1>deeID Secure Form</h1>
+If your browser is compromised or the website has a compromised JS library then this method of sending data to the server will benefit you.
+<hr />
+Pay securely through deeID. Scan the QR code below to send submit card details for payment.
+<center>
+    <div id="message">Scan the QR code using your deeID Mobile App</div>
+    <br />
+    <canvas id="qr"></canvas>
+    <div id="loader"></div>
+</center>
+</div>
+</div>
+{{ outMsg }}
+
+<input id="outmsg" type="hidden" value={{ outMsg }} />
+
+
+<script type="text/javascript" src="/static/js/qrious.min.js"></script>
+<script>
+let outmsg = document.getElementById('outmsg').value
+console.log(outmsg)
+var qr = new QRious({
+element: document.getElementById('qr'),
+size: 300,
+value: JSON.stringify({
+    'type': 'almasFFSRegister',
+    //'wsURL': 'http://35.246.61.212',
+    'wsURL': 'https://voco.serveo.net/',
+    'uID': outmsg,
+    'expirytime' : {{outMsg|tojson}},
+    'webdeeID': '', // deeID of the organisation
+    'sig': '', // signature of the org to ensure integirty of QR code
+})
+});
+/*
+Initilisation
+*/
+//var ws = new WebSocket("ws://35.246.61.212/");
+var ws = new WebSocket('ws://voco.serveo.net/')
+
+// Count the number of messages received from websocket server
+msg = 0
+ws.onmessage = function(event) {
+msg +=1;
+
+let dataJSON = JSON.parse(event.data);
+console.log(dataJSON);
+
+if(dataJSON['data']=='Pass') {
+document.getElementById('loader').style.display = 'block';
+document.getElementById('qr').style.display = 'none';
+document.getElementById('message').innerHTML = 'Congratulations, your identity has been verified';
+}
+
+// Create the QR Code on screen
+if (dataJSON['type'] == "uID") {
+document.getElementById('qr').innerHTML = '';
+console.log(dataJSON);
+
+}
+}
+</script>
+
+{% endif %}
+{% endblock %}

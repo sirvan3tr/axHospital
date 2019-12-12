@@ -11,3 +11,10 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+#qr {
+    border: 1px solid #ccc;
+    display: block;
+    min-width:20px;
+    min-height: 20px;
+}
