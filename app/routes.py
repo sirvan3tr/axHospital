@@ -523,7 +523,7 @@ def secureForm():
     deeID = '0xa78e5bb6ff6a849e120985d32532e5067f262e19'
 
     # Unique number to know which user the server is communicating with
-    y = 'dt18LneS1VWq'
+    y = 'dt18LneS1VWq' # this needs to be dynamic or related to a user
 
     # Add timestamp and other measures to
     # counter replay and other attacks
@@ -540,9 +540,11 @@ def secureForm():
             'type': 'deeIDForm',
             'form_type': 'card_details',
             'y': y,
+            'expirytime' : '',
             'deeID': deeID,
             'msg': msg,
-            'signature' : str(sig)
+            'sig' : str(sig), 
+            'wsURL': 'https://bcb596f1.ngrok.io'
         })
     
     return render_template('form.html', loginJSON = loginJSON, outMsg = outMsg)

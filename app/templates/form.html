@@ -21,47 +21,27 @@ Pay securely through deeID. Scan the QR code below to send submit card details f
 
 <script type="text/javascript" src="/static/js/qrious.min.js"></script>
 <script>
-let outmsg = document.getElementById('outmsg').value
-console.log(outmsg)
-var qr = new QRious({
-element: document.getElementById('qr'),
-size: 300,
-value: JSON.stringify({
-    'type': 'almasFFSRegister',
-    //'wsURL': 'http://35.246.61.212',
-    'wsURL': 'https://voco.serveo.net/',
-    'uID': outmsg,
-    'expirytime' : {{outMsg|tojson}},
-    'webdeeID': '', // deeID of the organisation
-    'sig': '', // signature of the org to ensure integirty of QR code
-})
-});
-/*
-Initilisation
-*/
-//var ws = new WebSocket("ws://35.246.61.212/");
-var ws = new WebSocket('ws://voco.serveo.net/')
-
 // Count the number of messages received from websocket server
 msg = 0
 ws.onmessage = function(event) {
-msg +=1;
+    msg +=1;
 
-let dataJSON = JSON.parse(event.data);
-console.log(dataJSON);
+    let dataJSON = JSON.parse(event.data);
+    console.log(dataJSON);
 
-if(dataJSON['data']=='Pass') {
-document.getElementById('loader').style.display = 'block';
-document.getElementById('qr').style.display = 'none';
-document.getElementById('message').innerHTML = 'Congratulations, your identity has been verified';
-}
+    // Create the QR Code on screen
+    if (dataJSON['type'] == "uID") {
+        let d  = {{outMsg|tojson}};
+        d['uID'] = dataJSON['uID'];
 
-// Create the QR Code on screen
-if (dataJSON['type'] == "uID") {
-document.getElementById('qr').innerHTML = '';
-console.log(dataJSON);
-
-}
+        document.getElementById('qr').innerHTML = '';
+        console.log(dataJSON);
+        var qr = new QRious({
+            element: document.getElementById('qr'),
+            size: 300,
+            value: JSON.stringify(d)
+        });
+    }
 }
 </script>
 
