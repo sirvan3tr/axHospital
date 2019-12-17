@@ -14,13 +14,12 @@ Pay securely through deeID. Scan the QR code below to send submit card details f
 </center>
 </div>
 </div>
-{{ outMsg }}
-
-<input id="outmsg" type="hidden" value={{ outMsg }} />
-
 
 <script type="text/javascript" src="/static/js/qrious.min.js"></script>
 <script>
+var d  = {{outMsg|tojson}};
+d = JSON.parse(d);
+var ws = new WebSocket('ws://bcb596f1.ngrok.io')
 // Count the number of messages received from websocket server
 msg = 0
 ws.onmessage = function(event) {
@@ -31,9 +30,8 @@ ws.onmessage = function(event) {
 
     // Create the QR Code on screen
     if (dataJSON['type'] == "uID") {
-        let d  = {{outMsg|tojson}};
-        d['uID'] = dataJSON['uID'];
-
+        d.uID = dataJSON['uID'];
+        console.log(d);
         document.getElementById('qr').innerHTML = '';
         console.log(dataJSON);
         var qr = new QRious({

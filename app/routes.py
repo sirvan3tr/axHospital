@@ -538,13 +538,15 @@ def secureForm():
 
     outMsg = json.dumps({
             'type': 'deeIDForm',
+            'domain': '',
             'form_type': 'card_details',
             'y': y,
-            'expirytime' : '',
+            'exp_time' : '',
             'deeID': deeID,
             'msg': msg,
             'sig' : str(sig), 
-            'wsURL': 'https://bcb596f1.ngrok.io'
+            'wsURL': 'https://bcb596f1.ngrok.io',
+            'uID': ''
         })
     
     return render_template('form.html', loginJSON = loginJSON, outMsg = outMsg)
