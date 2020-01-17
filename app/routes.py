@@ -539,14 +539,31 @@ def secureForm():
     outMsg = json.dumps({
             'type': 'deeIDForm',
             'domain': '',
+            'uID': '',
             'form_type': 'card_details',
             'y': y,
             'exp_time' : '',
             'deeID': deeID,
             'msg': msg,
             'sig' : str(sig), 
-            'wsURL': 'https://bcb596f1.ngrok.io',
-            'uID': ''
+            'ws_url': 'https://bcb596f1.ngrok.io',
+        })
+
+    custom_msg = json.dumps({
+            'type': 'deeIDForm',
+            'domain': '',
+            'uID': '',
+            'form_type': 'custom',
+            'form': [
+                ['text', 'Secret question', 'sec_ques_1'],
+                ['text', 'Answer', 'sec_ans_1'],
+            ],
+            'y': y,
+            'exp_time' : '',
+            'deeID': deeID,
+            'msg': msg,
+            'sig' : str(sig), 
+            'ws_url': 'https://bcb596f1.ngrok.io',
         })
     
-    return render_template('form.html', loginJSON = loginJSON, outMsg = outMsg)
+    return render_template('form.html', loginJSON = loginJSON, outMsg = custom_msg)
