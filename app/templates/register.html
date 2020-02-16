@@ -27,7 +27,7 @@
     Initilisation
 */
 //var ws = new WebSocket("ws://35.246.61.212/");
-var ws = new WebSocket('ws://voco.serveo.net/')
+var ws = new WebSocket('ws://localhost:5678')
 
 // Count the number of messages received from websocket server
 msg = 0
@@ -53,11 +53,12 @@ ws.onmessage = function(event) {
             value: JSON.stringify({
                 'type': 'almasFFSRegister',
                 //'wsURL': 'http://35.246.61.212',
-                'wsURL': 'https://voco.serveo.net/',
+                //'wsURL': 'https://voco.serveo.net/',
+                'wsURL': 'https://localhost:5678',
                 'uID': dataJSON['uID'],
                 'expirytime' : '',
                 'webdeeID': '', // deeID of the organisation
-                'sig': '', // signature of the org to ensure integirty of QR code
+                'sig': '', // signature of the org to ensure integrity of QR code
             })
         });
     }
