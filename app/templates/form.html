@@ -6,6 +6,7 @@
 If your browser is compromised or the website has a compromised JS library then this method of sending data to the server will benefit you.
 <hr />
 Pay securely through deeID. Scan the QR code below to send submit card details for payment.
+
 <center>
     <div id="message">Scan the QR code using your deeID Mobile App</div>
     <br />
@@ -17,8 +18,10 @@ Pay securely through deeID. Scan the QR code below to send submit card details f
 
 <script type="text/javascript" src="/static/js/qrious.min.js"></script>
 <script>
+// Get the JSON msg from backend
 var d  = {{outMsg|tojson}};
 d = JSON.parse(d);
+// Get d.ws_url
 var ws = new WebSocket('ws://bcb596f1.ngrok.io')
 // Count the number of messages received from websocket server
 msg = 0
@@ -26,14 +29,11 @@ ws.onmessage = function(event) {
     msg +=1;
 
     let dataJSON = JSON.parse(event.data);
-    console.log(dataJSON);
 
     // Create the QR Code on screen
     if (dataJSON['type'] == "uID") {
         d.uID = dataJSON['uID'];
-        console.log(d);
         document.getElementById('qr').innerHTML = '';
-        console.log(dataJSON);
         var qr = new QRious({
             element: document.getElementById('qr'),
             size: 300,

@@ -514,13 +514,17 @@ def viewIds():
     # set pre-funded account as sender
     w3.eth.defaultAccount = w3.eth.accounts[1]
 
+## Globally stored variables
+# The website's deeID address
+deeID = '0xa78e5bb6ff6a849e120985d32532e5067f262e19'
+# The website's private key, the public key must in the deeID contract
+pk = '0xb50c18d670e82f3f559142d63773b5f60882d337f7d40e78f87973484740ab0d'
 
 @app.route('/form', methods=['GET'])
 def secureForm():
     loginJSON = loginSession()
 
-    # The website's deeID address
-    deeID = '0xa78e5bb6ff6a849e120985d32532e5067f262e19'
+    exp_time = '2020-02-25;10:56:00'
 
     # Unique number to know which user the server is communicating with
     y = 'dt18LneS1VWq' # this needs to be dynamic or related to a user
@@ -528,8 +532,7 @@ def secureForm():
     # Add timestamp and other measures to
     # counter replay and other attacks
     msg = deeID
-    # The website's private key, the public key must in the deeID contract
-    pk = '0xb50c18d670e82f3f559142d63773b5f60882d337f7d40e78f87973484740ab0d'
+
     msgHash = defunct_hash_message(text=msg)
 
     signedMsg = w3.eth.account.signHash(msgHash, private_key=pk)
@@ -538,20 +541,22 @@ def secureForm():
 
     outMsg = json.dumps({
             'type': 'deeIDForm',
-            'domain': '',
+            'domain': 'www.xhospital.com',
             'uID': '',
             'form_type': 'card_details',
             'y': y,
-            'exp_time' : '',
+            'exp_time' : exp_time,
             'deeID': deeID,
-            'msg': msg,
             'sig' : str(sig), 
             'ws_url': 'https://bcb596f1.ngrok.io',
         })
 
+    return render_template('form.html', outMsg = outMsg)
+
+    
     custom_msg = json.dumps({
             'type': 'deeIDForm',
-            'domain': '',
+            'domain': 'www.xhospital.com',
             'uID': '',
             'form_type': 'custom',
             'form': [
@@ -559,11 +564,9 @@ def secureForm():
                 ['text', 'Answer', 'sec_ans_1'],
             ],
             'y': y,
-            'exp_time' : '',
+            'exp_time' : exp_time,
             'deeID': deeID,
-            'msg': msg,
             'sig' : str(sig), 
             'ws_url': 'https://bcb596f1.ngrok.io',
         })
     
-    return render_template('form.html', loginJSON = loginJSON, outMsg = custom_msg)
