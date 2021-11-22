@@ -1,6 +1,6 @@
 import sys
 from functools import reduce
-from fractions import gcd
+# from fractions import gcd
 
 sys.setrecursionlimit(1000000)  # long type,32bit OS 4B,64bit OS 8B(1bit for sign)
 
